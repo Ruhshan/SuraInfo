@@ -1,0 +1,95 @@
+<html>
+
+<head>
+        <script src="https://unpkg.com/vue@latest"></script>
+
+        <!-- use the latest release -->
+        <script src="https://unpkg.com/vue-select@latest"></script>
+        <script src="suradata.js"></script>
+        <!-- UIkit CSS -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.40/css/uikit.min.css" />
+
+        <!-- UIkit JS -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.40/js/uikit.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.40/js/uikit-icons.min.js"></script>
+
+        
+</head>
+
+<body>
+    <div id="app">
+
+        
+    
+        <div class="uk-container" > 
+                <fieldset class="uk-fieldset">
+                        <div class="uk-margin  uk-card uk-card-default uk-card-body">
+                                <label class="uk-form-label" for="form-stacked-text">Select Sura Number</label>
+                                <div class="uk-form-controls">
+                                        <v-select label="sid" :options="options" v-model="selected_id"></v-select>
+                                </div>
+                        </div>
+            
+                    </fieldset>
+            <table class="uk-table" v-if="shouldshow">
+                <tr>
+                    <th>Title:</th><td>{{title}}</td>
+                </tr>
+                <tr>
+                    <th>Classification:</th><td>{{classification}}</td>
+                </tr>
+                <tr>
+                    <th>Verses:</th><td>{{verses}}</td>
+                </tr>
+                <tr>
+                    <th>Rukus:</th><td>{{rukus}}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        Vue.component('v-select', VueSelect.VueSelect)
+        var app = new Vue({
+            el: '#app',
+            data: {
+                selected_id:'',
+                title:'',
+                classification:'',
+                verses:'',
+                rukus:'',
+                showtable:false,
+                options: get_suradata(),
+            },
+
+            watch:{
+                selected_id:function(newval, oldval){
+                    if(newval == null){
+                        console.log('eee');
+                        this.showtable=false;
+                    }
+                    else{
+                        console.log(newval.sid);
+                        console.log(newval.details);
+                        this.showtable=true,
+                        this.title=newval.details.title;
+                        this.classification=newval.details.classification;
+                        this.verses=newval.details.verses;
+                        this.rukus=newval.details.rukus; 
+                    }
+                    
+                }
+            },
+            computed:{
+                shouldshow:function(){
+                    return this.showtable;
+                }
+
+            },
+
+        })
+        console.log(get_suradata());
+    </script>
+</body>
+
+</html>
