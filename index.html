@@ -13,8 +13,7 @@
     <!-- UIkit JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.40/js/uikit.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.40/js/uikit-icons.min.js"></script>
-    <!--script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script-->
-    <!--script src="uikit/dist/js/uikit-icons.min.js"></script-->
+    
 
 
 </head>
@@ -22,21 +21,28 @@
 <body>
     <div id="app">
 
-
-
         <div class="uk-container">
             <div class="uk-grid">
                 <div class="uk-width-1-1">
                     <fieldset class="uk-fieldset">
                         <div class="uk-margin  uk-card uk-card-default uk-card-body">
                             <label class="uk-form-label" for="form-stacked-text">Select Sura Number</label>
-                            <div class="uk-form-controls">
-                                <v-select label="sid" :options="options" v-model="selected_id"></v-select>
+                            <div class="uk-grid">
+                                <div class="uk-width-4-5">
+                                    <div class="uk-form-controls">
+                                        <v-select label="sid" :options="options" v-model="selected_id"></v-select>
+                                    </div>
+                                </div>
+                                <div class="uk-width-1-5">
+                                    <button v-on:click="toggleall" class="uk-button uk-button-default">{{show_hide}}</button>
+                                </div>
+
                             </div>
+                            
                         </div>
 
                     </fieldset>
-                    <div v-if="shouldshow">
+                    <div v-show="showtable">
                     <table class="uk-table" >
                         <tr>
                             <th>Title:</th>
@@ -62,6 +68,24 @@
                     </div>
                     </div>
 
+                    <div v-show="showall">
+                            <table class="uk-table">
+                                <thead>
+                                    <th>Id</th>
+                                    <th>Title</th>
+                                    <th>Classification</th>
+                                    <th>Verses</th>
+                                </thead>
+                                <tr v-for="option in options">
+                                    <td>{{option.sid}}</td>
+                                    <td>{{option.details.title}}</td>
+                                    <td>{{option.details.classification}}</td>
+                                    <td>{{option.details.verses}}</td>
+                                </tr>
+                            </table>
+    
+                        </div>
+
                 </div>
 
             </div>
@@ -82,6 +106,8 @@
                 rukus: '',
                 showtable: false,
                 options: get_suradata(),
+                showall:false,
+                show_hide: "Show All",
             },
 
             watch: {
@@ -90,14 +116,19 @@
                         this.showtable = false;
                     }
                     else {
-                        console.log(newval.sid);
-                        console.log(newval.details);
+                        
                         this.showtable = true,
                         this.title = newval.details.title;
                         this.classification = newval.details.classification;
                         this.verses = newval.details.verses;
                         this.rukus = newval.details.rukus;
                         this.current_index = parseInt(newval.sid);
+
+
+                        if(this.showall==true){
+                            this.showall=false;
+                            this.show_hide="Show All";
+                        }
                     }
 
                 }
@@ -121,6 +152,24 @@
                         this.selected_id = this.options[this.current_index];
                     }
                 },
+                toggleall:function(event){
+                    this.showall = !this.showall;
+
+                    if(this.showall == false){
+                        this.show_hide="Show All";
+
+                        if(this.current_index!=0){
+                            this.showtable=true;
+                        }
+                        
+
+                    }
+                    else{
+                        this.show_hide = "Hide All";
+                        this.showtable=false;
+                        
+                    }
+                }
             },
 
         })
