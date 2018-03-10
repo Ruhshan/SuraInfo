@@ -2,7 +2,7 @@
 function get_suradata(){
     suradata = [
 
-        { sid:"1", details:{title:"Al-Fatihah[notes 1]", classification: "Meccan", verses: "7", rukus: "1"} },
+        { sid:"1", details:{title:"Al-Fatihah", classification: "Meccan", verses: "7", rukus: "1"} },
         { sid:"2", details:{title:"Al-Baqarah", classification: "Medinan", verses: "286", rukus: "40"} },
         { sid:"3", details:{title:"Al Imran", classification: "Medinan", verses: "200", rukus: "20"} },
         { sid:"4", details:{title:"An-Nisa'", classification: "Medinan", verses: "176", rukus: "24"} },
